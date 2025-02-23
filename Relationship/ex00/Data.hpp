@@ -10,6 +10,7 @@ class   Position
     public:
         Position(){x = 0; y = 0; z = 0; }
         void setPosition(int x, int y, int z){this->x = x; this->y = y; this->z = z;}
+        void resetPosition(void){this->x = -1; this->y = -1; this->z = -1;}
         const int& getX(void) const {return this->x;}
         const int& getY(void) const {return this->y;}
         const int& getZ(void) const {return this->z;}

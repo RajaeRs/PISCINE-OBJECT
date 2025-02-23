@@ -39,7 +39,70 @@ class Workshop
             }
             delete[] this->workignSpace;
         }
-        void signUpWorkshop(Worker *w);
-        void leaveWorkshop(Worker *w);
-        void executeWorkDay();
+        int getAvailablePosition(Worker *w)
+        {
+            int z,y,x;
+            for (z = 0; z < size.getZ(); z++)
+            {
+                for (y = 0; y < size.getY(); y++)
+                {
+                    for (x = 0; x < size.getX(); x++)
+                    {
+                        if (workignSpace[z][y][x] == 0)
+                        {
+                            workignSpace[z][y][x] = 1;
+                            w->setPosition(x, y, z);
+                            return 0;
+                        }
+                    }
+                }
+            }
+            std::cout << "there is no available position on workshop." << std::endl;
+            return 1;
+        }
+        void signUpWorkshop(Worker *w)
+        {
+            std::vector<Worker *>::iterator it;
+            
+            
+            for (it = workerList->begin(); it != workerList->end() && *it != w; it++){}
+            if (it != workerList->end())
+            {
+                std::cout << "Worker " <<  w->getName() << " alredy on this workshop." << std::endl;
+                return;
+            }
+            if (getAvailablePosition(w));
+                return ;
+            this->workerList->push_back(w);
+            std::cout << w->getName() << " : added to workshop." << std::endl;
+        }
+        void leaveWorkshop(Worker *w)
+        {
+            std::vector<Worker *>::iterator it;
+            for (it = workerList->begin(); it != workerList->end() && *it != w; it++){}
+            if (it != workerList->end())
+            {
+                workerList->erase(it);
+                w->resetPosition();
+                std::cout << "Worker " <<  w->getName() << " leave succsesfuly from the workshop." << std::endl;
+                return;
+            }
+            std::cout << w->getName() << " : theresen't on the workshop." << std::endl;
+        }
+        void executeWorkDay()
+        {
+            std::vector<Worker *>::iterator it;
+            if (workerList->size() == 0)
+            {
+                std::cout << "there is no worker in this workshop.";
+                return ;
+            }
+            for (it = workerList->begin(); it != workerList->end(); it++)
+            {
+                if ((*it)->hasATool())
+                    (*it)->work();
+                else
+                    leaveWorkshop(*it);
+            }
+        }
 };
