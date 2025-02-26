@@ -6,9 +6,9 @@
 class Hammer : public Tool
 {
     public :
-        Hammer() : Tool(){}
-		~Hammer(){}
-		void use(){ numberOfUses++; }
+        Hammer();
+		~Hammer();
+		void use();
 		// void assigneTo(Worker *work){
 		// 	if (this->usedBy != NULL)
 		// 		this->usedBy->removeHammer();

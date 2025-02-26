@@ -6,9 +6,9 @@
 class   Shovel : public Tool
 {
 	public:
-		Shovel() : Tool(){}
-		~Shovel(){}
-		void use(){ numberOfUses++; }
+		Shovel();
+		~Shovel();
+		void use();
 		// void assigneTo(Worker *work){
 		// 	if (this->usedBy != NULL)
 		// 		this->usedBy->removeShovel();
