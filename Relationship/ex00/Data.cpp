@@ -17,8 +17,16 @@ std::ostream&   operator<<(std::ostream& stream, const Position& value)
 
 
 Statistic::Statistic(){level = 0; exp = 0;}
+Statistic::Statistic(int l, int e){level = l; exp = e;}
 Statistic::~Statistic(){}
 void Statistic::addLevel(void) {this->level++;}
 void Statistic::addExp(int exp) {this->exp += exp;}
 const int& Statistic::getLevel(void) const {return this->level;}
 const int& Statistic::getExp(void) const {return this->exp;}
+
+
+std::ostream&   operator<<(std::ostream& stream, const Statistic& value)
+{
+    stream << "(exp: " << value.getExp() << ", level: " << value.getLevel() << ')';
+    return stream;
+}

@@ -1,6 +1,9 @@
 #include "Shovel.hpp"
 
-Shovel::Shovel() : Tool(){}
+Shovel::Shovel()
+{
+    std::cout << "Shovel created" << std::endl;
+}
 Shovel::~Shovel()
 {
 

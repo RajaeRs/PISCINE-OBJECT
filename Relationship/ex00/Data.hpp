@@ -28,9 +28,12 @@ class Statistic
         int exp;
     public:
         Statistic();
+        Statistic(int l, int e);
         ~Statistic();
         void addLevel(void);
         void addExp(int exp);
         const int& getLevel(void) const;
         const int& getExp(void) const;
 };
+
+std::ostream&   operator<<(std::ostream& stream, const Statistic& value);

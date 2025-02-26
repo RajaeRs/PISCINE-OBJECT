@@ -12,7 +12,7 @@ class Workshop
         int ***workignSpace;
         Position size;
     public:
-        Workshop(int x, int y, int z);
+        Workshop(int z, int y, int x);
         ~Workshop();
         int getAvailablePosition(Worker *w);
         std::vector<Worker *>::iterator removeWorkerFromWorkshop(std::vector<Worker *>::iterator it);

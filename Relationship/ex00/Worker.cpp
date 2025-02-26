@@ -11,15 +11,18 @@ void Worker::setPosition(int x, int y, int z){this->coordonnee.setPosition(x, y,
 void Worker::resetPosition(void){this->coordonnee.resetPosition();}
 void Worker::addExp()
 {
-	this->stat.addExp(20);
+	this->stat.addExp(50);
 	if(this->stat.getExp() % 100 == 0)
 		this->stat.addLevel();
 }
  void Worker::takeTool(Tool *t)
  {
-     this->tools.push_back(t);
-     t->setWorker(this);
-	 std::cout << name << ": has a tool now" << std::endl;
+	if (t)
+	{
+     	this->tools.push_back(t);
+     	t->setWorker(this);
+	 	std::cout << name << ": has a tool now" << std::endl;
+	}
  }
 void Worker::putTool(const Tool *t)
 {
@@ -35,12 +38,6 @@ void Worker::putTool(const Tool *t)
 	}
 	if (it == this->tools.end())
 		std::cout << name << " : i don't have this tool" << std::endl;
-	// if (tools.size() == 0)
-	// {
-	// 	std::vector<Workshop *>::iterator it;
-	// 	for(it = workshops.begin(); it != workshops.end(); it++)
-	// 		(*it)->leaveWorkshop(this);
-	// }
 	return ;
 }
 bool	Worker::hasATool(void){
@@ -51,7 +48,10 @@ bool	Worker::hasATool(void){
 void	Worker::work()
 {
 	if (this->hasATool())
+	{
 		std::cout << name << " in position " << coordonnee << " start working." << std::endl;
+		this->addExp();
+	}
 	else 
 		std::cout << name << " : i can't work, I don't have any tool" << std::endl;
 }
@@ -60,4 +60,17 @@ Position Worker::getPosition(void) const
 {
 	Position pos(coordonnee.getX(),coordonnee.getY(),coordonnee.getZ());
 	return pos;
+}
+
+Statistic Worker::getStatic(void) const
+{
+	Statistic st(stat.getLevel(), stat.getExp());
+	return st;
+}
+
+std::ostream&   operator<<(std::ostream& stream, const Worker& value)
+{
+	stream << value.getName() << " in position : " << value.getPosition()
+	<< " And has " << value.getStatic();
+	return stream;
 }

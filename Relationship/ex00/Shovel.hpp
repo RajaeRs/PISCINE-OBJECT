@@ -9,10 +9,4 @@ class   Shovel : public Tool
 		Shovel();
 		~Shovel();
 		void use();
-		// void assigneTo(Worker *work){
-		// 	if (this->usedBy != NULL)
-		// 		this->usedBy->removeShovel();
-		// 	this->usedBy = work;
-		// }
-
 };

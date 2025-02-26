@@ -12,6 +12,11 @@ void Tool::setWorker(Worker *w){
   return ;
 }
 
+int Tool::getNumberOfUse()
+{
+  return this->numberOfUses;
+}
+
 void Tool::removeWorker() {
   this->usedBy->putTool(this); 
   this->usedBy = NULL;

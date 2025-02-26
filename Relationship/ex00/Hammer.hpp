@@ -9,9 +9,4 @@ class Hammer : public Tool
         Hammer();
 		~Hammer();
 		void use();
-		// void assigneTo(Worker *work){
-		// 	if (this->usedBy != NULL)
-		// 		this->usedBy->removeHammer();
-		// 	this->usedBy = work;
-		// }
 };

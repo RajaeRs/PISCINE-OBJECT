@@ -1,5 +1,9 @@
 #include "Hammer.hpp"
 
-Hammer::Hammer() : Tool(){}
+Hammer::Hammer()
+{
+    std::cout << "Hammer created" << std::endl;
+
+}
 Hammer::~Hammer(){}
 void Hammer::use(){ numberOfUses++; }
