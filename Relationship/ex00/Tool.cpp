@@ -18,7 +18,8 @@ int Tool::getNumberOfUse()
 }
 
 void Tool::removeWorker() {
-  this->usedBy->putTool(this); 
+  if (this->usedBy != NULL)
+    this->usedBy->putTool(this); 
   this->usedBy = NULL;
   return ;
 }

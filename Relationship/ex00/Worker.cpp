@@ -5,7 +5,12 @@ Worker::Worker(std::string name)
 	this->name = name; coordonnee.setPosition(-1, -1, -1);
 	std::cout << "Worker " << this->name << " is created." << std::endl;	
 }
-Worker::~Worker(){}
+Worker::~Worker()
+{
+	std::vector<Workshop *>::iterator it;
+	for (it = workshops.begin(); it != workshops.end(); it++)
+		(*it)->leaveWorkshop(this);
+}
 const std::string & Worker::getName(void) const { return name ;}
 void Worker::setPosition(int x, int y, int z){this->coordonnee.setPosition(x, y, z);}
 void Worker::resetPosition(void){this->coordonnee.resetPosition();}

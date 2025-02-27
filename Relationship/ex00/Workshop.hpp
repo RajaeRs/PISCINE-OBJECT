@@ -18,6 +18,6 @@ class Workshop
         std::vector<Worker *>::iterator removeWorkerFromWorkshop(std::vector<Worker *>::iterator it);
         void showWorkingSpace(void);
         void signUpWorkshop(Worker *w);
-        void leaveWorkshop(Worker *w);
+        std::vector<Worker *>::iterator leaveWorkshop(Worker *w);
         void executeWorkDay();
 };

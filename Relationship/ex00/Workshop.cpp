@@ -35,17 +35,18 @@ void Workshop::showWorkingSpace(void)
 
 Workshop::~Workshop()
 {
+    std::vector<Worker *>::iterator it;
+    for (it = workerList.begin(); it != workerList.end();)
+        it = this->leaveWorkshop(*it);
     for (int i = 0; i < size.getZ(); i++)
     {
         for (int j = 0; j < size.getY(); j++)
-        {
             delete[] this->workignSpace[i][j];
-            
-        }
         delete[] this->workignSpace[i];
     }
     delete[] this->workignSpace;
 }
+
 int Workshop::getAvailablePosition(Worker *w)
 {
     int z,y,x;
@@ -65,7 +66,6 @@ int Workshop::getAvailablePosition(Worker *w)
         }
     }
     std::cout << "there is no available position on workshop." << std::endl;
-    this->showWorkingSpace();
     return 1;
 }
 void Workshop::signUpWorkshop(Worker *w)
@@ -86,7 +86,7 @@ void Workshop::signUpWorkshop(Worker *w)
     this->workerList.push_back(w);
     std::cout << w->getName() << " : added to workshop." << std::endl;
 }
-void Workshop::leaveWorkshop(Worker *w)
+std::vector<Worker *>::iterator Workshop::leaveWorkshop(Worker *w)
 {
     std::vector<Worker *>::iterator it;
     for (it = workerList.begin(); it != workerList.end() && *it != w; it++){}
@@ -94,12 +94,13 @@ void Workshop::leaveWorkshop(Worker *w)
     {
         Position pos = (*it)->getPosition();
         workignSpace[pos.getZ()][pos.getY()][pos.getX()] = 0;
-        workerList.erase(it);
+        it = workerList.erase(it);
         w->resetPosition();
         std::cout << "Worker `" <<  w->getName() << "` leave the workshop." << std::endl;
-        return;
+        return it;
     }
     std::cout << w->getName() << " : theresen't on the workshop." << std::endl;
+    return it;
 }
 
 std::vector<Worker *>::iterator Workshop::removeWorkerFromWorkshop(std::vector<Worker *>::iterator it)
