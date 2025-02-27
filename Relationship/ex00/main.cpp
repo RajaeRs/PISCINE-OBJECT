@@ -4,77 +4,116 @@
 #include "Shovel.hpp"
 #include "Hammer.hpp"
 #include "Workshop.hpp"
-#include <cstdlib> // Required for rand() and srand()
-#include <ctime>   // Required for time()
+#include <cstdlib>
+#include <ctime>
 
+#define MAX_COORDONNEE 5
 
-void CreateSimulation(Workshop& ws1, Workshop& ws2, std::vector<Worker*> *w, std::vector<Tool*> *t)
+int generateRandomNbr(int max, int min)
 {
-    srand(time(0));
-    std::string wn = "worker_";
-    int randomNumber;
-    std::vector<Worker *>::iterator it;
-    for (int i = 0; i < 10; i++)
-    {
-        std::string name = wn + std::to_string(i);
-        Worker *wr = new Worker(name);
-        w->push_back(wr);
-    }
-    for (int i = 0; i < 10; i++)
-    {
-        Tool *tl;
-        randomNumber = 1 + (rand() % (50 - 1 + 1));
-        if (randomNumber % 2 == 0)
-            tl = new Shovel();
-        else
-            tl = new Hammer();
-        t->push_back(tl);
-    }
-    std::cout << w->size() << std::endl;
-    for (it = w->begin(); it != w->end(); it++)
-    {
-        if (*it != nullptr)
-        {
-            randomNumber = 1 + (rand() % (9 - 1 + 1));
-            std::cout << randomNumber << "   ";
-            ((*it))->takeTool((*t)[randomNumber]);
-
-        }
-    }
+    int random;
+    
+    do {
+        random = rand() % max;
+    } while (random == max || random == min);
+    return random;
 }
 
+class Simulation
+{
+    private:
+        std::vector<Workshop *> ws;
+        std::vector<Worker *> wr;
+        std::vector<Tool *> t;
+    public :
+        Simulation()
+        {
+            setWorkshops(2);
+            setWorkers(5);
+            setTools(5);
+        };
+        Simulation(int nbr_worker, int nbr_tool, int nbr_workshop)
+        {
+            try {
+                setWorkshops(nbr_workshop);
+                setWorkers(nbr_worker);
+                setTools(nbr_tool);
+            }
+            catch (const char * message)
+            {
+                std::cerr << "Please don't use a negative Number!" << std::endl;
+            }
+        }
+        void setWorkshops(int nbr_workshop)
+        {
+            int randomNumber;
+            for (int i = 0; i < nbr_workshop; i++)
+            {
+                int x = generateRandomNbr(MAX_COORDONNEE, 0);
+                int y = generateRandomNbr(MAX_COORDONNEE, 0);
+                int z = generateRandomNbr(MAX_COORDONNEE, 0);
+                Workshop *ws_tmp = new Workshop(x, y, z);
+                ws.push_back(ws_tmp);
+            }
+        }
+        void setWorkers(int nbr_worker)
+        {
+            std::string name("Worker_");
+            Worker *w;
+            for (int i = 0; i < nbr_worker; i++)
+            {
+                w = new Worker(name + std::to_string(i));
+                wr.push_back(w);
+            }
+        }
+        void setTools(int nbr_tool)
+        {
+            int randomNumber;
+            for (int i = 0; i < nbr_tool; i++)
+            {
+                Tool *t_tmp;
+                randomNumber = generateRandomNbr(MAX_COORDONNEE, -1);
+                if (randomNumber % 2 == 0)
+                    t_tmp = new Shovel();
+                else
+                    t_tmp = new Hammer();
+                t.push_back(t_tmp);
+            }
+        }
+        void start()
+        {
+            int wr_nbr = wr.size();
+            int ws_nbr = ws.size();
+            int t_nbr = t.size();
+            int random;
+            std::vector<Worker *>::iterator it;
+            for (it = wr.begin(); it != wr.end(); it++)
+            {
+                int tn = generateRandomNbr(t_nbr, -1);
+                (*it)->takeTool(t[tn]);
+                int wn = generateRandomNbr(ws_nbr, -1);
+                ws[wn]->signUpWorkshop(*it);
+
+            }
+            std::vector<Workshop *>::iterator itt;
+            int i = 0;
+            for(itt = ws.begin() ; itt != ws.end(); itt++)
+            {
+                i++;
+                std::cout << "Workshop : "<< i << std::endl;
+                (*itt)->showWorkingSpace();
+                (*itt)->executeWorkDay();
+            }
+        }
+};
 
 int main()
 {
+        srand(time(0));
     try {
-        Workshop ws(1,4,2);
-        Workshop ws2(2,4,10);
-        std::vector<Worker*> *Workers = new std::vector<Worker *>(1);
-        std::vector<Tool*> *tools = new std::vector<Tool *>(1);
+        Simulation sm = Simulation();
 
-        CreateSimulation(ws, ws2, Workers, tools);
-
-
-
-
-
-        // Worker *w1, *w2;
-        // Tool *sh1, *sh2;
-        // sh1 = new Shovel();
-        // sh2 = new Hammer();
-        // w1 = new Worker("w1");
-        // w1->takeTool(sh1);
-        // w2 = new Worker("w2");
-        // w2->takeTool(sh2);
-        // ws.signUpWorkshop(w1);
-        // ws2.signUpWorkshop(w1);
-        // ws.signUpWorkshop(w2);
-        // ws.executeWorkDay();
-        // ws2.executeWorkDay();
-        // ws2.executeWorkDay();
-        // ws.showWorkingSpace();
-        // ws2.showWorkingSpace();
-        // std::cout << *w1 << " \n" << *w2 << std::endl;
+        sm.start();
 
     }
     catch (const char* err)

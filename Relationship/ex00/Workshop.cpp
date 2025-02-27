@@ -65,6 +65,7 @@ int Workshop::getAvailablePosition(Worker *w)
         }
     }
     std::cout << "there is no available position on workshop." << std::endl;
+    this->showWorkingSpace();
     return 1;
 }
 void Workshop::signUpWorkshop(Worker *w)
@@ -72,11 +73,13 @@ void Workshop::signUpWorkshop(Worker *w)
     std::vector<Worker *>::iterator it;
     
     
-    for (it = workerList.begin(); it != workerList.end() && *it != w; it++){}
-    if (it != workerList.end())
+    for (it = workerList.begin(); it != workerList.end(); it++)
     {
-        std::cout << "Worker " <<  w->getName() << " alredy on this workshop." << std::endl;
-        return;
+        if (*it == w)
+        {
+            std::cout << "Worker " <<  w->getName() << " alredy on this workshop." << std::endl;
+            return;
+        }
     }
     if (getAvailablePosition(w))
         return ;
@@ -104,7 +107,7 @@ std::vector<Worker *>::iterator Workshop::removeWorkerFromWorkshop(std::vector<W
     Position pos = (*it)->getPosition();
     (*it)->resetPosition();
     workignSpace[pos.getZ()][pos.getY()][pos.getX()] = 0;
-    std::cout << "Worker `" <<  (*it)->getName() << "` removed from the workshop cause he has no Tool." << std::endl;
+    std::cout << "`" <<  (*it)->getName() << "` removed from the workshop cause he has no Tool." << std::endl;
     return workerList.erase(it);
 }
 
@@ -116,12 +119,15 @@ void Workshop::executeWorkDay()
         std::cout << "there is no worker in this workshop." << std::endl;
         return ;
     }
-    for (it = workerList.begin(); it != workerList.end(); it++)
+    for (it = workerList.begin(); it != workerList.end();)
     {
         if (!(*it)->hasATool())
             it = removeWorkerFromWorkshop(it);
-        if ((*it)->hasATool())
+        else
+        {
             (*it)->work();
+            ++it;
+        }
     }
     return ;
 }
