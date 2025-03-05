@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "Data.hpp"
 #include "Tool.hpp"
 #include "Workshop.hpp"
@@ -9,28 +10,49 @@
 class Tool;
 class Workshop;
 
+typedef struct t_positionOnWorkshop
+{
+	Position coordonnee;
+	Workshop *ws;
+}	positionOnWorkshop;	
+
 class   Worker
 {
     private:
 		std::string name;
-		Position coordonnee;
 		Statistic stat;
         std::vector<Tool *> tools;
-		std::vector<Workshop *> workshops;
+		std::vector<positionOnWorkshop> pos;
 		void addExp();
 
 	public :
 		Worker(std::string name);
 		~Worker();
 		const std::string & getName(void) const;
-		void setPosition(int x, int y, int z);
-		Position getPosition(void) const;
+		void addWorkshop(Workshop *ws, Position pos);
+		void removeWorkshop(Workshop *ws);
+		Position getPosition(Workshop *);
 		Statistic getStatic(void) const;
-		void resetPosition(void);
         void takeTool(Tool *t);
 		void putTool(const Tool *t);
-		bool	hasATool(void);
-		void	work();
+		bool	hasATool(Workshop *ws);
+		void	work(Workshop *ws);
+		template <typename ToolType>
+        ToolType* getTool();
 };
 
 std::ostream&   operator<<(std::ostream& stream, const Worker& value);
+
+template <typename ToolType>
+ToolType* Worker::getTool()
+{
+	std::vector<Tool *>::iterator it;
+	ToolType* toolNeeded;
+	for(it = tools.begin(); it != tools.end(); it++)
+	{
+		toolNeeded = dynamic_cast<ToolType*>((*it));
+		if (toolNeeded)
+			return toolNeeded;
+	}
+	return NULL;
+}

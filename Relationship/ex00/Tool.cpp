@@ -26,5 +26,4 @@ void Tool::removeWorker() {
 
 Tool::~Tool(){
     removeWorker();
-    std::cout << "this Tool was destroyed." << std::endl;
 }

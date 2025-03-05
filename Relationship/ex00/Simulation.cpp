@@ -42,7 +42,7 @@ void Simulation::setWorkshops(int nbr_workshop)
         int x = generateRandomNbr(MAX_COORDONNEE, 0);
         int y = generateRandomNbr(MAX_COORDONNEE, 0);
         int z = generateRandomNbr(MAX_COORDONNEE, 0);
-        Workshop *ws_tmp = new Workshop(x, y, z);
+        Workshop *ws_tmp = new Workshop(x, y, z, (i % 2 == 0) ? "Hammer" : "Shovel");
         ws.push_back(ws_tmp);
     }
 }
@@ -99,6 +99,7 @@ Simulation::~Simulation()
     std::vector<Workshop *>::iterator ws_it;
     std::vector<Worker *>::iterator wr_it;
     std::vector<Tool *>::iterator t_it;
+
     for (ws_it = ws.begin(); ws_it != ws.end(); ws_it++)
         delete *ws_it;
     for (t_it = t.begin(); t_it != t.end(); t_it++)

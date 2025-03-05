@@ -1,19 +1,70 @@
 #include "Worker.hpp"
+#include "Hammer.hpp"
+#include "Shovel.hpp"
 
 Worker::Worker(std::string name)
 {
-	this->name = name; coordonnee.setPosition(-1, -1, -1);
-	std::cout << "Worker " << this->name << " is created." << std::endl;	
+	this->name = name;
 }
 Worker::~Worker()
 {
-	std::vector<Workshop *>::iterator it;
-	for (it = workshops.begin(); it != workshops.end(); it++)
-		(*it)->leaveWorkshop(this);
+	std::vector<positionOnWorkshop>::iterator it;
+	std::vector<Tool *>::iterator tool_it;
+
+	for (it = pos.begin(); it != pos.end(); it++)
+	{
+		(*it).ws->leaveWorkshop(this, (*it).coordonnee);
+		std::cout << "`" << name << "` removed from position : " << (*it).coordonnee << std::endl;
+	}
+	for (tool_it = tools.begin(); tool_it != tools.end();)
+	{
+		(*tool_it)->removeWorker();
+		if (tool_it != tools.end())
+			tool_it++;
+	}
 }
+
 const std::string & Worker::getName(void) const { return name ;}
-void Worker::setPosition(int x, int y, int z){this->coordonnee.setPosition(x, y, z);}
-void Worker::resetPosition(void){this->coordonnee.resetPosition();}
+
+
+Position Worker::getPosition(Workshop *ws)
+{
+	Position poss(-1, -1, -1);
+	std::vector<positionOnWorkshop>::iterator it;
+	for (it = this->pos.begin(); it != this->pos.end(); it++)
+	{
+		if ((*it).ws == ws)
+		{
+			poss.setPosition((*it).coordonnee.getX(), (*it).coordonnee.getY(), (*it).coordonnee.getZ());
+			return (poss);
+		}
+	}
+	return poss;
+}
+
+
+void Worker::addWorkshop(Workshop *ws, Position pos)
+{
+	positionOnWorkshop newWorkshop;
+	newWorkshop.ws = ws;
+	newWorkshop.coordonnee = pos;
+	this->pos.push_back(newWorkshop);
+}
+
+void Worker::removeWorkshop(Workshop *ws)
+{
+	std::vector<positionOnWorkshop>::iterator it;
+	for (it = pos.begin(); it != pos.end(); it++)
+	{
+		if ((*it).ws == ws)
+		{
+			pos.erase(it);
+			return ;
+		}
+	}
+}
+
+
 void Worker::addExp()
 {
 	this->stat.addExp(50);
@@ -45,26 +96,29 @@ void Worker::putTool(const Tool *t)
 		std::cout << name << " : i don't have this tool" << std::endl;
 	return ;
 }
-bool	Worker::hasATool(void){
-	if (this->tools.size() != 0)
+bool	Worker::hasATool(Workshop *ws){
+	bool hasRequiredTool = 
+        (this->getTool<Hammer>() && ws->getRequiredTool() == "Hammer") || 
+        (this->getTool<Shovel>() && ws->getRequiredTool() == "Shovel");
+	if (this->tools.size() != 0 && hasRequiredTool)
 		return true;
 	return false;
 }
-void	Worker::work()
+void	Worker::work(Workshop *ws)
 {
-	if (this->hasATool())
+	if (this->hasATool(ws))
 	{
-		std::cout << name << " in position " << coordonnee << " start working." << std::endl;
+		std::cout << name << " in position " << this->getPosition(ws) << " start working." << std::endl;
 		this->addExp();
+		Tool *t;
+		if (ws->getRequiredTool() == "Hammer")
+			t = this->getTool<Hammer>();
+		else
+			t = this->getTool<Shovel>();
+		t->use();
 	}
 	else 
 		std::cout << name << " : i can't work, I don't have any tool" << std::endl;
-}
-
-Position Worker::getPosition(void) const
-{
-	Position pos(coordonnee.getX(),coordonnee.getY(),coordonnee.getZ());
-	return pos;
 }
 
 Statistic Worker::getStatic(void) const
@@ -75,7 +129,7 @@ Statistic Worker::getStatic(void) const
 
 std::ostream&   operator<<(std::ostream& stream, const Worker& value)
 {
-	stream << value.getName() << " in position : " << value.getPosition()
-	<< " And has " << value.getStatic();
+	
+	stream << value.getName() << " has " << value.getStatic();
 	return stream;
 }

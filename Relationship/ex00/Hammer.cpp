@@ -2,8 +2,6 @@
 
 Hammer::Hammer()
 {
-    std::cout << "Hammer created" << std::endl;
-
 }
 Hammer::~Hammer(){}
-void Hammer::use(){ numberOfUses++; }
+void Hammer::use(){ numberOfUses++; ; std::cout << "this Hammer Used " << numberOfUses << " time." << std::endl;}

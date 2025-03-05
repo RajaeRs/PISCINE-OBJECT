@@ -14,11 +14,6 @@ class   Tool
         void setWorker(Worker *w);
         void removeWorker();
         int getNumberOfUse();
-        // void assigneTo(Worker *work){
-			  //   if (this->usedBy != NULL)
-			  //   	this->usedBy->removeTool();
-			  //   this->usedBy = work;
-		    // }
         virtual void use() = 0;
         virtual ~Tool();
 };

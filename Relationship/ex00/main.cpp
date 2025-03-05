@@ -8,12 +8,14 @@
 #include <ctime>
 #include "Simulation.hpp"
 
+
+
 int main()
 {
     srand(time(0));
     try {
 
-        Simulation sm = Simulation(1 , 20, 30);
+        Simulation sm = Simulation(5 , 50, 100);
 
         sm.start();
 
@@ -21,7 +23,6 @@ int main()
     catch (const char* err)
     {
         std::cerr << err << std::endl;
-        return (1);
     }
     return (0);
 }
