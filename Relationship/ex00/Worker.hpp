@@ -24,13 +24,14 @@ class   Worker
         std::vector<Tool *> tools;
 		std::vector<positionOnWorkshop> pos;
 		void addExp();
+		void addWorkshop(Workshop *ws, Position pos);
+		void removeWorkshop(Workshop *ws);
+		friend class Workshop;
 
 	public :
 		Worker(std::string name);
 		~Worker();
 		const std::string & getName(void) const;
-		void addWorkshop(Workshop *ws, Position pos);
-		void removeWorkshop(Workshop *ws);
 		Position getPosition(Workshop *);
 		Statistic getStatic(void) const;
         void takeTool(Tool *t);
