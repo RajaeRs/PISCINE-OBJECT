@@ -36,7 +36,6 @@ Simulation::Simulation(int nbr_workshop, int nbr_worker, int nbr_tool)
 
 void Simulation::setWorkshops(int nbr_workshop)
 {
-    int randomNumber;
     for (int i = 0; i < nbr_workshop; i++)
     {
         int x = generateRandomNbr(MAX_COORDONNEE, 0);
@@ -72,10 +71,8 @@ void Simulation::setTools(int nbr_tool)
 }
 void Simulation::start()
 {
-    int wr_nbr = wr.size();
     int ws_nbr = ws.size();
     int t_nbr = t.size();
-    int random;
     std::vector<Worker *>::iterator it;
     for (it = wr.begin(); it != wr.end(); it++)
     {
