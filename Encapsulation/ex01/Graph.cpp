@@ -1,6 +1,6 @@
 #include "Graph.hpp"
 
-#include <algorithm> // for std::min
+#include <algorithm>
 
 Graph::Graph(float width, float height) 
     : size(std::min(width, 10.0f), std::min(height, 10.0f)) {}
@@ -9,7 +9,6 @@ void Graph::addPoint(float x, float y)
 {
     int uniqe_key;
 
-    uniqe_key = x + y;
     if (x >= 0 && y >= 0 && x < this->size.getX() && y < this->size.getY())
     {
         uniqe_key = generatKey(x, y);
