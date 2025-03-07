@@ -18,7 +18,7 @@ class Bank
         Bank();
         Bank(const double liquidity);
         const Account* openAccount(const double& amount);
-        void displayAccount(const int& id) const; //should be remouved
+        void displayAccount(const int& id) const;
         void closeAccount(const int& id);
         void makeDeposit(const int& id, const double& amount);
         void makeWithdrawal(const int& id, const double& amount);

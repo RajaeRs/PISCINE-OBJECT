@@ -1,4 +1,4 @@
-#include "Bank.hpp"
+#include "Bank_bonus.hpp"
 #include <iomanip>
 
 const double Bank::commission = 0.05;
@@ -7,26 +7,26 @@ Bank::Bank(){this->liquidity = 0; this->lastId = 0; }
 Bank::Bank(const double liquidity){this->liquidity = liquidity; this->lastId = 0; }
 Bank::~Bank()
 {
-    std::map<int, Account*>::iterator it;
+    std::map<int, Bank::Account*>::iterator it;
     for (it = this->customers.begin(); it != this->customers.end(); it++)
         delete it->second;
 }
 
-const Account* Bank::openAccount(const double& amount)
+const int& Bank::openAccount(const double& amount)
 {
-    Account* newAccount;
+    Bank::Account* newAccount;
     double revenue;
 
     if (amount < 0)
         throw "Operation Failed : \n    [!] You can't create an account with negative amount";
 
     revenue = amount * this->commission;
-    newAccount = new Account(++this->lastId, (amount - revenue));
+    newAccount = new Bank::Account(++this->lastId, (amount - revenue));
     
     this->customers[this->lastId] = newAccount;
     this->liquidity += revenue;
 
-    return newAccount;
+    return this->lastId;
 };
 
 void Bank::displayAccount(const int& id) const
@@ -110,4 +110,12 @@ void Bank::showCostummers(void) const
     for (it = this->customers.begin(); it != this->customers.end(); it++){
         std::cout << std::left << std::setw(5) << it->first << "| " << it->second->amount << std::endl;
     }
+}
+
+const Bank::Account* Bank::operator[](int id)
+{
+    if (this->customers[id])
+        return this->customers[id];
+    else
+        throw "there is no customer with this id";
 }
