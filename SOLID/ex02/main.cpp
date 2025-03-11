@@ -2,19 +2,23 @@
 #include "circle.hpp"
 #include "rectangle.hpp"
 #include "triangle.hpp"
-
-void print(std::string shape_name, Shape *s)
-{
-    std::cout << shape_name << " :" << std::endl;
-    std::cout << "  " << s->calculat_perimeter() << "m." << std::endl;
-    std::cout << "  " << s->calculat_area() << "m²." << std::endl;
-    delete s;
-}
+#include <vector>
 
 int main()
 {
-    print (std::string("Rectangle"), new Rectangle(2, 5));
-    print (std::string("Triangle"),new Triangle(6.0, 4.0, 3.0, 5.0));
-    print (std::string("Circle"),new Circle(5));
+    std::vector<Shape *> shapes;
+    shapes.push_back(new Rectangle(2, 5));
+    shapes.push_back(new Triangle(6.0, 4.0, 3.0, 5.0));
+    shapes.push_back(new Circle(5));
+
+    for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++)
+    {
+        std::cout << " ----------------------- " << std::endl;
+        std::cout << "  " << (*it)->calculat_perimeter() << "m." << std::endl;
+        std::cout << "  " << (*it)->calculat_area() << "m²." << std::endl;
+    }
+    for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++)
+        delete (*it);
+
     return 0;
 }
