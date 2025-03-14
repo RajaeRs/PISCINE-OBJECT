@@ -1,4 +1,4 @@
-NAME = shape
+NAME = solide
 
 HEADER = employeeManagement.hpp employee.hpp hourlyEmployee.hpp salariedEmployee.hpp
 

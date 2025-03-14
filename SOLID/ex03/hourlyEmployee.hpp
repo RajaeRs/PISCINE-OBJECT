@@ -5,6 +5,16 @@
 class   TempWorker : public Employee
 {
     public:
-        void executeWorkday() { total_hours += 7;}
-        void    executeWorkPerHour(int aditional_hours){total_hours += aditional_hours;}
+        TempWorker(int hourlyValue) : Employee(hourlyValue) {}
+        void    executeWorkPerHour(int aditional_hours)
+        {
+            std::cout << "Temp Employee add " << aditional_hours << "H as aditional work." << std::endl;
+            total_hours += aditional_hours;
+        }
+        int     calculateSalary(void)const 
+        { 
+            int salary = total_hours * hourlyValue;
+            std::cout << "Temp Employee salary is: " << salary << "$" << std::endl;
+            return salary; 
+        }
 };

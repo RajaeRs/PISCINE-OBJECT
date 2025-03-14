@@ -6,9 +6,9 @@
 
 class   EmployeeManager
 {
-    public:
-        std::vector<Employee *> employees;
     private:
+        std::vector<Employee *> employees;
+    public:
         EmployeeManager(){}
         ~EmployeeManager(){}
         void addEmployee(Employee* e) {employees.push_back(e);}
@@ -32,6 +32,9 @@ class   EmployeeManager
         }
         void calculatePayroll()
         {
-            
+            int payrol = 0;
+            for (std::vector<Employee *>::iterator it = employees.begin(); it != employees.end(); it++)
+                payrol += (*it)->calculateSalary();
+            std::cout << "Payrol : " << payrol << "$" << std::endl;
         }
 };
