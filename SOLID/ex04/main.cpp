@@ -39,7 +39,6 @@ int main()
         }
         for (std::vector<ILogger *>::iterator it = col_header.begin(); it != col_header.end(); it++)
             delete (*it);
-        throw std::runtime_error(std::string("Error message"));
     }
     catch (const std::runtime_error &message)
     {
