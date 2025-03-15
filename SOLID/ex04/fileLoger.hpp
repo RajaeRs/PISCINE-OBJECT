@@ -24,7 +24,7 @@ class   FileLogger : public ILogger
             file_name = generateLogHeader::generateHeader() + "_" + str + ".txt";
             file.open(file_name, std::ios::app);
             if (!file.is_open()) {
-                throw std::runtime_error("Failed to open file: " + file_name);
+                throw std::runtime_error(std::string("Failed to open file: ") + file_name);
             }
             std::cout << "Log file with the name " << file_name << " created succsesfuly" << std::endl;
         }
@@ -43,7 +43,7 @@ class   FileLogger : public ILogger
             if (std::remove(file_name.c_str()) == 0) {
                 std::cout << "Log file deleted successfully.\n";
             } else {
-                throw "Closing: Error deleting file!\n";
+                throw std::runtime_error(std::string("Closing: Error deleting file!\n"));
             }
         }
 };
